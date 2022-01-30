@@ -2,7 +2,7 @@
   <div>
     <TheNavigation />
     <div class="container">
-      <router-view />
+      <router-view :key="$route.path" />
     </div>
   </div>
 </template>

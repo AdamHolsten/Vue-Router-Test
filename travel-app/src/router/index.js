@@ -1,44 +1,32 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 
-
 const routes = [
   {
     path: "/",
     name: "Home",
     component: Home,
   },
-
   {
-    path: "/brazil",
-    name: "Brazil",
-    // Enables Lazy loading of routes
-    component: () =>
-      import(/* webpackChunkName: "brazil"*/ "@/views/Brazil.vue"),
-  },
-  {
-    path: "/hawaii",
-    name: "Hawaii",
-    component: () =>
-      import(/* webpackChunkName: "hawaii"*/ "@/views/Hawaii.vue"),
-  },
-  {
-    path: "/jamaica",
-    name: "Jamaica",
-    component: () =>
-      import(/* webpackChunkName: "jamaica"*/ "@/views/Jamaica.vue"),
-  },
-  {
-    path: "/panama",
-    name: "Panama",
-    component: () =>
-      import(/* webpackChunkName: "panama"*/ "@/views/Panama.vue"),
+    path: "/destination/:id/:slug",
+    name: "destination.show",
+    component: () => import("@/views/DestinationShow.vue"),
+    props: (route) => ({ ...route.params, id: parseInt(route.params.id) }),
+    children: [
+      {
+        path: ":experienceSlug",
+        name: "experience.show",
+        component: () => import("@/views/ExperienceShow.vue"),
+        props: (route) => ({ ...route.params, id: parseInt(route.params.id) }),
+      },
+    ],
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  // linkActiveClass: "vue-school-active-link",
 });
 
 export default router;
